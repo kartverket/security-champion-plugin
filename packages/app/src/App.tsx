@@ -49,6 +49,7 @@ import { DaskOnboardingPage } from '@kartverket/backstage-plugin-dask-onboarding
 import { pluginRiScNorwegianTranslation } from '@kartverket/backstage-plugin-risk-scorecard';
 import { OpencostPage } from '@kartverket/backstage-plugin-opencost';
 import { CatalogCreatorPage } from '@internal/plugin-catalog-creator';
+import { SecurityChampionPage } from '@internal/plugin-security-champion';
 
 const app = createApp({
   __experimentalTranslations: {
@@ -153,6 +154,7 @@ const routes = (
     <Route path="/dask-onboarding" element={<DaskOnboardingPage />} />
     <Route path="/opencost" element={<OpencostPage />} />
     <Route path="/catalog-creator" element={<CatalogCreatorPage />} />
+    <Route path="/security-champion" element={<SecurityChampionPage />} />
   </FlatRoutes>
 );
 
