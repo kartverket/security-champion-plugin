@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react"
+import React, { useMemo } from "react"
 import { ErrorBanner } from "./ErrorBanner"
 import { SecurityChamp } from "../typesFrontend"
 import { SecurityChampionItem } from "./SecurityChampionItem"
@@ -10,7 +10,7 @@ import CircularProgress from "@mui/material/CircularProgress"
 import List from "@mui/material/List"
 import Typography from "@mui/material/Typography"
 import { useSecurityChampionsQuery } from "../hooks/useSecurityChampionsQuery"
-import UserSearch from "./UserSearch"
+// import UserSearch from "./UserSearch"
 
 const CardWrapper = ({
     title,
@@ -38,8 +38,8 @@ export const SecurityChampion = ({
     const { data, isPending, error } =
         useSecurityChampionsQuery(repositoryNames)
 
-    const [edit, setEdit] = useState<boolean>(true)
-    const [selectedEmail, setSelectedEmail] = useState<string | null>("");
+    // const [edit, setEdit] = useState<boolean>(true)
+    // const [selectedEmail, setSelectedEmail] = useState<string | null>("");
 
     const groupedChampions: Map<
         string,
@@ -64,23 +64,23 @@ export const SecurityChampion = ({
         return champMap
     }, [data])
 
-        if (edit) {
-        return (
-             <CardWrapper
-                title={
-                    "Edit security champion:"
-                }
-            >
-                <UserSearch
-                    selectedEmail={selectedEmail}
-                    setSelectedEmail={setSelectedEmail}
-                />
+    //     if (edit) {
+    //     return (
+    //          <CardWrapper
+    //             title={
+    //                 "Edit security champion:"
+    //             }
+    //         >
+    //             <UserSearch
+    //                 selectedEmail={selectedEmail}
+    //                 setSelectedEmail={setSelectedEmail}
+    //             />
 
-                Brukere:
-                {selectedEmail}
-            </CardWrapper>
-        )
-    }
+    //             Brukere:
+    //             {selectedEmail}
+    //         </CardWrapper>
+    //     )
+    // }
 
     if (isPending)
         return (
