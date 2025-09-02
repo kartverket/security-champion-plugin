@@ -1,5 +1,5 @@
 {
-  "name": "@internal/plugin-security-champion",
+  "name": "@kartverket/plugin-security-champion",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "private": true,
