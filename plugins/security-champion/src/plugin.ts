@@ -12,11 +12,12 @@ export const securityChampionPlugin = createPlugin({
   },
 });
 
+//Pek mot sec champ card eller tilsvarende.
 export const SecurityChampionPage = securityChampionPlugin.provide(
   createRoutableExtension({
     name: 'SecurityChampionPage',
     component: () =>
-      import('./components/ExampleComponent').then(m => m.ExampleComponent),
+      import('./components/SecurityChampionCard').then(m => m.SecurityChampionCard),
     mountPoint: rootRouteRef,
   }),
 );
