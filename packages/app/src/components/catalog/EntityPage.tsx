@@ -72,7 +72,7 @@ import {
   SecurityMetricsPage,
 } from '@kartverket/backstage-plugin-security-metrics-frontend';
 
-import { SecurityChampionCard } from '@internal/plugin-security-champion';
+import { SecurityChampionCard } from '@kartverket/plugin-security-champion';
 
 
 const techdocsContent = (

@@ -59,5 +59,5 @@ backend.add(import('@backstage/plugin-techdocs-backend'));
 // Security metrics
 backend.add(import('@kartverket/backstage-plugin-security-metrics-backend'));
 
-backend.add(import('@internal/plugin-security-champion-backend'));
+backend.add(import('@kartverket/plugin-security-champion-backend'));
 backend.start();
