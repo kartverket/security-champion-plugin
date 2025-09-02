@@ -1,27 +1,16 @@
 import { useQuery } from "@tanstack/react-query"
-import { getAuthenticationTokens } from "../utils/authenticationUtils"
-import { MetricTypes } from "../utils/MetricTypes"
-import { useConfig } from "./getConfig"
-import { SecurityChamp } from "../typesFrontend"
+
+import { SecurityChamp } from "../types"
 import { post } from "../api/client"
-
+//import { configApiRef, useApi } from "@backstage/core-plugin-api";
 export const useSecurityChampionsQuery = (repositoryNames: string[]) => {
-    const { config, backstageAuthApi, microsoftAuthApi, endpointUrl } =
-        useConfig(MetricTypes.securityChampions)
 
+    const endpointUrl = new URL("http://localhost:8080/api/securityChampion/")
+        
     return useQuery<SecurityChamp[], Error>({
         queryKey: ["security-champions", repositoryNames],
         queryFn: async () => {
-            const { entraIdToken, backstageToken } =
-                await getAuthenticationTokens(
-                    config,
-                    backstageAuthApi,
-                    microsoftAuthApi,
-                )
-            return post<
-                { repositoryNames: string[]; entraIdToken: string },
-                SecurityChamp[]
-            >(endpointUrl, backstageToken, { repositoryNames, entraIdToken })
+            return post<{repositoryNames: string[]}, SecurityChamp[]>( endpointUrl, { repositoryNames } )
         },
         enabled: repositoryNames.length !== 0,
         staleTime: 3600000,

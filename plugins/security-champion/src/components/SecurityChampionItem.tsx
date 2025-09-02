@@ -1,5 +1,5 @@
 import React from "react"
-import { SecurityChamp } from "../typesFrontend"
+import { SecurityChamp } from "../types"
 import { useUserProfile } from "../hooks/useUserProfile"
 import { Box, useMediaQuery, useTheme } from "@mui/system"
 import { CustomTooltip } from "./LightTooltip"
@@ -36,7 +36,7 @@ const KVSecurityChampionItem = ({ champion }: { champion: SecurityChamp }) => {
             <ListItemText
                 primary={
                     user?.spec?.profile?.displayName ||
-                    champion.securityChampionHandle
+                    champion.securityChampionEmail
                 }
                 secondary={champion.securityChampionEmail}
             />
@@ -53,7 +53,7 @@ const UnknownSecurityChampionItem = ({
             <ListItemAvatar>
                 <Avatar src="/broken-image.jpg" />
             </ListItemAvatar>
-            <ListItemText primary={champion.securityChampionHandle} />
+            <ListItemText primary={champion.securityChampionEmail} />
         </>
     )
 }

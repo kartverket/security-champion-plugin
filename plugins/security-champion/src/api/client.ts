@@ -1,13 +1,11 @@
 export const post = async <RequestBody, ResponseBody>(
     url: URL,
-    backstageToken: string,
     requestBody: RequestBody,
 ): Promise<ResponseBody> => {
     const response = await fetch(`${url}`, {
         method: "POST",
         headers: {
             "content-type": "application/json",
-            authorization: `Bearer ${backstageToken}`,
         },
         body: JSON.stringify(requestBody),
     })

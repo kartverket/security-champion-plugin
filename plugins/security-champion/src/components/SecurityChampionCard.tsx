@@ -14,7 +14,7 @@ export const SecurityChampionCard = () => {
             ?.filter((rel) => {
                 return rel.targetRef.startsWith("component")
             })
-            .map((rel) => rel.targetRef.split("/")[1]) as string[]
+            .map((rel) => rel.targetRef.split("/")[1]) as string[]     
     } else if (entity.kind === "Component") {
         componentNames = [entity.metadata.name]
     }

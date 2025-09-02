@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react"
 import { ErrorBanner } from "./ErrorBanner"
-import { SecurityChamp } from "../typesFrontend"
+import { SecurityChamp } from "../types"
 import { SecurityChampionItem } from "./SecurityChampionItem"
 import Card from "@mui/material/Card"
 import CardHeader from "@mui/material/CardHeader"
@@ -27,7 +27,6 @@ const CardWrapper = ({
     </Card>
 )
 
-
 interface SecurityChampionProps {
     repositoryNames: string[]
 }
@@ -38,7 +37,7 @@ export const SecurityChampion = ({
     const { data, isPending, error } =
         useSecurityChampionsQuery(repositoryNames)
 
-     const [edit, setEdit] = useState<boolean>(true)
+     const [edit, setEdit] = useState<boolean>(false)
      const [selectedEmail, setSelectedEmail] = useState<string | null>("");
 
     const groupedChampions: Map<
@@ -51,11 +50,12 @@ export const SecurityChampion = ({
             { champ: SecurityChamp; repositoryNames: string[] }
         >()
         data?.forEach((champ) => {
-            const repositories = champMap.get(champ.securityChampionHandle)
+            //use email to avoid using github handle
+            const repositories = champMap.get(champ.securityChampionEmail)
             if (repositories) {
                 repositories.repositoryNames.push(champ.repositoryName)
             } else {
-                champMap.set(champ.securityChampionHandle, {
+                champMap.set(champ.securityChampionEmail, {
                     champ,
                     repositoryNames: [champ.repositoryName],
                 })
