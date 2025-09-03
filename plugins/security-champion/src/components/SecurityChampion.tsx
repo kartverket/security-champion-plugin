@@ -11,6 +11,8 @@ import List from "@mui/material/List"
 import Typography from "@mui/material/Typography"
 import { useSecurityChampionsQuery } from "../hooks/useSecurityChampionsQuery"
 import UserSearch from "./UserSearch"
+import { Button } from "@material-ui/core"
+import { useSetSecurityChampionMutation } from "../hooks/useChangeSecurityChampionsQuery"
 
 const CardWrapper = ({
     title,
@@ -39,12 +41,16 @@ export const SecurityChampion = ({
 
      const [edit, setEdit] = useState<boolean>(false)
      const [selectedEmail, setSelectedEmail] = useState<string | null>("");
+     const {mutate, isError, isSuccess} = useSetSecurityChampionMutation()
+
+     var isSystem = false
 
     const groupedChampions: Map<
         string,
         { champ: SecurityChamp; repositoryNames: string[] }
     > = useMemo(() => {
         if (data && data?.length < 2) return new Map() // no need to group
+        isSystem = true
         const champMap = new Map<
             string,
             { champ: SecurityChamp; repositoryNames: string[] }
@@ -64,6 +70,23 @@ export const SecurityChampion = ({
         return champMap
     }, [data])
 
+    const setSecurityChampion = () => {
+        if (selectedEmail) {
+                const champion : SecurityChamp = {
+                repositoryName: repositoryNames[0],
+                securityChampionEmail: selectedEmail
+            }
+            mutate(champion)
+            if (isSuccess) {
+                setEdit(false)
+            }
+        }
+    }
+
+    const onEdit = () => {
+        setEdit(!edit)
+    }
+
         if (edit) {
         return (
              <CardWrapper
@@ -76,8 +99,13 @@ export const SecurityChampion = ({
                     setSelectedEmail={setSelectedEmail}
                 />
 
-                Brukere:
-                {selectedEmail}
+                {!selectedEmail &&
+                <Button style={{ marginTop: 8 }} variant="contained" onClick={setSecurityChampion}  disabled >Change Champion</Button>}
+                
+                 {selectedEmail &&
+                <Button style={{ marginTop: 8 }} variant="contained" onClick={setSecurityChampion}>Change champion</Button>}
+
+                {isError && <div>Could not set security champion</div>}
             </CardWrapper>
         )
     }
@@ -117,6 +145,8 @@ export const SecurityChampion = ({
                 <List>
                     <List>{renderSecurityChampions()}</List>
                 </List>
+                {!isSystem &&
+                <Button onClick={onEdit}>Edit</Button>}
             </CardWrapper>
         )
     }

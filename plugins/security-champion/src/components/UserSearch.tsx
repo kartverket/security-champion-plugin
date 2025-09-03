@@ -32,7 +32,6 @@ export const UserSearch = ({selectedEmail, setSelectedEmail}: UserSearchProps) =
     return (
 
         <div>
-        <h3>Select a User</h3>
 
         <Autocomplete
             options={emails}
