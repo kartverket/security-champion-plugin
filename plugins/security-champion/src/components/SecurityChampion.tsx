@@ -41,7 +41,8 @@ export const SecurityChampion = ({
 
      const [edit, setEdit] = useState<boolean>(false)
      const [selectedEmail, setSelectedEmail] = useState<string | null>("");
-     const {mutate, isError, isSuccess} = useSetSecurityChampionMutation()
+     const mutation = useSetSecurityChampionMutation()
+     const [isMutationError, setIsMutationError] = useState<boolean>(false)
 
      var isSystem = false
 
@@ -76,10 +77,15 @@ export const SecurityChampion = ({
                 repositoryName: repositoryNames[0],
                 securityChampionEmail: selectedEmail
             }
-            mutate(champion)
-            if (isSuccess) {
-                setEdit(false)
-            }
+            mutation.mutate(champion, {
+                onSuccess: () => {
+                    setEdit(false)
+                },
+                //Could add a display message?
+                onError: () => {
+                    setIsMutationError(true)
+                }
+            })
         }
     }
 
@@ -99,13 +105,14 @@ export const SecurityChampion = ({
                     setSelectedEmail={setSelectedEmail}
                 />
 
+                {isMutationError && <ErrorBanner errorMessage="Failed to set security champion"/>}
+
                 {!selectedEmail &&
                 <Button style={{ marginTop: 8 }} variant="contained" onClick={setSecurityChampion}  disabled >Change Champion</Button>}
                 
                  {selectedEmail &&
                 <Button style={{ marginTop: 8 }} variant="contained" onClick={setSecurityChampion}>Change champion</Button>}
 
-                {isError && <div>Could not set security champion</div>}
             </CardWrapper>
         )
     }
