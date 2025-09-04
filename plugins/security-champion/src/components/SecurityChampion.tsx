@@ -36,7 +36,7 @@ interface SecurityChampionProps {
 export const SecurityChampion = ({
     repositoryNames,
 }: SecurityChampionProps) => {
-    const { data, isPending, error } =
+    const { data, isPending, error, refetch } =
         useSecurityChampionsQuery(repositoryNames)
 
      const [edit, setEdit] = useState<boolean>(false)
@@ -79,10 +79,12 @@ export const SecurityChampion = ({
             }
             mutation.mutate(champion, {
                 onSuccess: () => {
+                    refetch();
                     setEdit(false)
                 },
                 //Could add a display message?
-                onError: () => {
+                onError: (error) => {
+                    console.log(error)
                     setIsMutationError(true)
                 }
             })

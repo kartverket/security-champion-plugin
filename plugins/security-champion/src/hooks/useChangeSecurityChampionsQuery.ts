@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query"
 
-import { SecurityChamp, SetSecurityChampionResponse } from "../types"
+import { SecurityChamp } from "../types"
 import { post } from "../api/client"
 //import { configApiRef, useApi } from "@backstage/core-plugin-api";
 export const useSetSecurityChampionMutation = () => {
@@ -9,7 +9,7 @@ export const useSetSecurityChampionMutation = () => {
         
     return useMutation({
         mutationFn: async (securityChampion : SecurityChamp) => {
-            return post<SecurityChamp, SetSecurityChampionResponse>( endpointUrl, securityChampion )
+            return post<SecurityChamp, string>( endpointUrl, securityChampion )
         },
     })
 }
