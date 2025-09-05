@@ -1,4 +1,3 @@
-import React from "react"
 import { SecurityChamp } from "../types"
 import { useUserProfile } from "../hooks/useUserProfile"
 import { Box, useMediaQuery, useTheme } from "@mui/system"
