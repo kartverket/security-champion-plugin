@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react"
 import { ErrorBanner } from "./ErrorBanner"
-import { SecurityChamp } from "../typesFrontend"
+import { SecurityChamp } from "../types"
 import { SecurityChampionItem } from "./SecurityChampionItem"
 import Card from "@mui/material/Card"
 import CardHeader from "@mui/material/CardHeader"
@@ -11,6 +11,8 @@ import List from "@mui/material/List"
 import Typography from "@mui/material/Typography"
 import { useSecurityChampionsQuery } from "../hooks/useSecurityChampionsQuery"
 import UserSearch from "./UserSearch"
+import { Button } from "@material-ui/core"
+import { useSetSecurityChampionMutation } from "../hooks/useChangeSecurityChampionsQuery"
 
 const CardWrapper = ({
     title,
@@ -27,7 +29,6 @@ const CardWrapper = ({
     </Card>
 )
 
-
 interface SecurityChampionProps {
     repositoryNames: string[]
 }
@@ -35,27 +36,33 @@ interface SecurityChampionProps {
 export const SecurityChampion = ({
     repositoryNames,
 }: SecurityChampionProps) => {
-    const { data, isPending, error } =
+    const { data, isPending, error, refetch } =
         useSecurityChampionsQuery(repositoryNames)
 
-     const [edit, setEdit] = useState<boolean>(true)
+     const [edit, setEdit] = useState<boolean>(false)
      const [selectedEmail, setSelectedEmail] = useState<string | null>("");
+     const mutation = useSetSecurityChampionMutation()
+     const [isMutationError, setIsMutationError] = useState<boolean>(false)
+
+     var isSystem = false
 
     const groupedChampions: Map<
         string,
         { champ: SecurityChamp; repositoryNames: string[] }
     > = useMemo(() => {
         if (data && data?.length < 2) return new Map() // no need to group
+        isSystem = true
         const champMap = new Map<
             string,
             { champ: SecurityChamp; repositoryNames: string[] }
         >()
         data?.forEach((champ) => {
-            const repositories = champMap.get(champ.securityChampionHandle)
+            //use email to avoid using github handle
+            const repositories = champMap.get(champ.securityChampionEmail)
             if (repositories) {
                 repositories.repositoryNames.push(champ.repositoryName)
             } else {
-                champMap.set(champ.securityChampionHandle, {
+                champMap.set(champ.securityChampionEmail, {
                     champ,
                     repositoryNames: [champ.repositoryName],
                 })
@@ -63,6 +70,28 @@ export const SecurityChampion = ({
         })
         return champMap
     }, [data])
+
+    const setSecurityChampion = () => {
+        if (selectedEmail) {
+                const champion : SecurityChamp = {
+                repositoryName: repositoryNames[0],
+                securityChampionEmail: selectedEmail
+            }
+            mutation.mutate(champion, {
+                onSuccess: () => {
+                    refetch();
+                    setEdit(false)
+                },
+                onError: () => {
+                    setIsMutationError(true)
+                }
+            })
+        }
+    }
+
+    const onEdit = () => {
+        setEdit(!edit)
+    }
 
         if (edit) {
         return (
@@ -76,8 +105,14 @@ export const SecurityChampion = ({
                     setSelectedEmail={setSelectedEmail}
                 />
 
-                Brukere:
-                {selectedEmail}
+                {isMutationError && <ErrorBanner errorMessage="Failed to set security champion"/>}
+
+                {!selectedEmail &&
+                <Button style={{ marginTop: 8 }} variant="contained" onClick={setSecurityChampion}  disabled >Change Champion</Button>}
+                
+                 {selectedEmail &&
+                <Button style={{ marginTop: 8 }} variant="contained" onClick={setSecurityChampion}>Change champion</Button>}
+
             </CardWrapper>
         )
     }
@@ -117,6 +152,8 @@ export const SecurityChampion = ({
                 <List>
                     <List>{renderSecurityChampions()}</List>
                 </List>
+                {!isSystem &&
+                <Button onClick={onEdit}>Edit</Button>}
             </CardWrapper>
         )
     }
