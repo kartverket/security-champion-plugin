@@ -8,7 +8,7 @@ jobs:
     build:
         defaults:
             run:
-                working-directory: plugins/security-security-champion
+                working-directory: plugins/security-champion
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
