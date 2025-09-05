@@ -12,7 +12,7 @@ export const securityChampionPlugin = createPlugin({
   },
 });
 
-//Pek mot sec champ card eller tilsvarende.
+
 export const SecurityChampionPage = securityChampionPlugin.provide(
   createRoutableExtension({
     name: 'SecurityChampionPage',

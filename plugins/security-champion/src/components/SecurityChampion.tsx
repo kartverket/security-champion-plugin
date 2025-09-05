@@ -82,9 +82,7 @@ export const SecurityChampion = ({
                     refetch();
                     setEdit(false)
                 },
-                //Could add a display message?
-                onError: (error) => {
-                    console.log(error)
+                onError: () => {
                     setIsMutationError(true)
                 }
             })
