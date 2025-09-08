@@ -21,7 +21,6 @@ export const UserSearch = ({selectedEmail, setSelectedEmail}: UserSearchProps) =
             const emails: string[] = results.items.map(user => {
               return user.metadata.name
             })
-            console.log(results.items)
             setEmails(emails);
         }
         fetchUsers();
