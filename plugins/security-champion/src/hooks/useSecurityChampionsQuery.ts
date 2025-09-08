@@ -2,14 +2,24 @@ import { useQuery } from "@tanstack/react-query"
 
 import { SecurityChamp } from "../types"
 import { post } from "../api/client"
-export const useSecurityChampionsQuery = (repositoryNames: string[]) => {
+import { configApiRef, identityApiRef, useApi } from "@backstage/core-plugin-api"
+import { getBackstageToken } from "../utils/authenticationUtils"
 
-    const endpointUrl = new URL("http://localhost:8080/api/securityChampion/")
+export const useSecurityChampionsQuery = (repositoryNames: string[]) => {
+    const backendUrl = useApi(configApiRef).getString('backend.baseUrl');
+    const backstageAuthApi = useApi(identityApiRef)
         
     return useQuery<SecurityChamp[], Error>({
         queryKey: ["security-champions", repositoryNames],
         queryFn: async () => {
-            return post<{repositoryNames: string[]}, SecurityChamp[]>( endpointUrl, { repositoryNames } )
+
+            const { backstageToken } =
+                await getBackstageToken(
+                    backstageAuthApi,
+                )
+            
+            const endpointUrl = backendUrl + "/api/proxy/security-champion-proxy/api/securityChampion"
+            return post<{repositoryNames: string[] }, SecurityChamp[]>(endpointUrl, backstageToken, { repositoryNames } )
         },
         enabled: repositoryNames.length !== 0,
         staleTime: 3600000,
