@@ -5,8 +5,8 @@ import { Autocomplete, TextField } from '@mui/material';
 import { UserEntity } from "@backstage/catalog-model"
 
 interface UserSearchProps {
-  selectedEmail: string | null | undefined,
-  setSelectedEmail: Dispatch<SetStateAction<string | undefined | null>>
+  selectedEmail: string | undefined,
+  setSelectedEmail: Dispatch<SetStateAction<string | undefined>>
 }
 
 export const UserSearch = ({selectedEmail, setSelectedEmail}: UserSearchProps) => {
@@ -39,6 +39,7 @@ export const UserSearch = ({selectedEmail, setSelectedEmail}: UserSearchProps) =
         <Autocomplete
             options={emails}
             value={selectedEmail}
+            defaultValue={""}
             onChange={(_, newValue) => setSelectedEmail(newValue)}
             renderInput={(params) => <TextField {...params} label="Select User by Email" />}
       />
