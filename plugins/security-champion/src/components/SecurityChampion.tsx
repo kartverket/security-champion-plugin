@@ -36,11 +36,10 @@ interface SecurityChampionProps {
 export const SecurityChampion = ({
     repositoryNames,
 }: SecurityChampionProps) => {
-    const { data, isPending, error, refetch } =
-        useSecurityChampionsQuery(repositoryNames)
+     const { data, isPending, error, refetch } = useSecurityChampionsQuery(repositoryNames)
 
      const [edit, setEdit] = useState<boolean>(false)
-     const [selectedEmail, setSelectedEmail] = useState<string | null>("");
+     const [selectedEmail, setSelectedEmail] = useState<string | null | undefined>("");
      const mutation = useSetSecurityChampionMutation()
      const [isMutationError, setIsMutationError] = useState<boolean>(false)
 
