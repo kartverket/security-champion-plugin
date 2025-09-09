@@ -18,26 +18,27 @@ const KVSecurityChampionItem = ({ champion }: { champion: SecurityChamp }) => {
     const { user, loading, error } = useUserProfile(
         champion.securityChampionEmail!,
     )
-
+    
     if (loading)
         return (
             <Box sx={{ display: "flex" }}>
                 <CircularProgress />
             </Box>
         )
+
     if (error) return <Typography color="error">{error.message}</Typography>
 
     return (
         <>
             <ListItemAvatar>
-                <Avatar src={user?.spec?.profile?.picture} />
+                <Avatar src={user?.spec.profile?.picture} />
             </ListItemAvatar>
             <ListItemText
                 primary={
                     user?.spec?.profile?.displayName ||
                     champion.securityChampionEmail
                 }
-                secondary={champion.securityChampionEmail}
+                secondary={user?.spec.profile?.email || "User not in catalog"}
             />
         </>
     )
