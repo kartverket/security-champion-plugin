@@ -35,10 +35,25 @@ export const UserSearch = ({selectedEmail, setSelectedEmail}: UserSearchProps) =
     return (
 
         <div>
-
         <Autocomplete
             options={emails}
             value={selectedEmail}
+            slotProps={{
+            listbox: {
+            sx: {
+                '& .MuiAutocomplete-option': {
+                px: 2,
+                py: 1,
+                '&.Mui-focused': {
+                    backgroundColor: 'light-gray',
+                },
+                '&.Mui-selected': {
+                    backgroundColor: 'light-gray',
+                },
+                },
+            },
+            },
+        }}
             onChange={(_, newValue) => setSelectedEmail(newValue)}
             renderInput={(params) => <TextField {...params} label="Select User by Email" />}
       />
