@@ -39,7 +39,7 @@ export const SecurityChampion = ({
      const { data, isPending, error, refetch } = useSecurityChampionsQuery(repositoryNames)
 
      const [edit, setEdit] = useState<boolean>(false)
-     const [selectedEmail, setSelectedEmail] = useState<string | undefined>("");
+     const [selectedEmail, setSelectedEmail] = useState<string | null | undefined>("");
      const mutation = useSetSecurityChampionMutation()
      const [isMutationError, setIsMutationError] = useState<boolean>(false)
 
