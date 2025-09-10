@@ -11,7 +11,7 @@ import List from "@mui/material/List"
 import Typography from "@mui/material/Typography"
 import { useSecurityChampionsQuery } from "../hooks/useSecurityChampionsQuery"
 import UserSearch from "./UserSearch"
-import { Button } from "@material-ui/core"
+import { Button } from "@mui/material"
 import { useSetSecurityChampionMutation } from "../hooks/useChangeSecurityChampionsQuery"
 
 const CardWrapper = ({

@@ -1,4 +1,4 @@
-import { styled } from "@mui/material/styles"
+import { styled } from '@mui/system';
 import Tooltip, { TooltipProps } from "@mui/material/Tooltip"
 
 export const CustomTooltip = styled(({ className, ...props }: TooltipProps) => (
