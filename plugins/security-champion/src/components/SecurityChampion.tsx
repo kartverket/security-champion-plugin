@@ -14,6 +14,7 @@ import UserSearch from "./UserSearch"
 import { useSetSecurityChampionMutation } from "../hooks/useChangeSecurityChampionsQuery"
 import { Button } from '@backstage/ui';
 import { UserEntity } from "@backstage/catalog-model"
+import { useEntity } from "@backstage/plugin-catalog-react"
 
 const CardWrapper = ({
     title,
@@ -44,14 +45,13 @@ export const SecurityChampion = ({
      const mutation = useSetSecurityChampionMutation()
      const [isMutationError, setIsMutationError] = useState<boolean>(false)
 
-     var isSystem = false
+    const { entity } = useEntity()
 
     const groupedChampions: Map<
         string,
         { champ: SecurityChamp; repositoryNames: string[] }
     > = useMemo(() => {
         if (data && data?.length < 2) return new Map() // no need to group
-        isSystem = true
         const champMap = new Map<
             string,
             { champ: SecurityChamp; repositoryNames: string[] }
@@ -153,7 +153,7 @@ export const SecurityChampion = ({
                 <List>
                     <List>{renderSecurityChampions()}</List>
                 </List>
-                {!isSystem &&
+                {(entity.kind == "Component") &&
                 <Button onClick={onEdit}>Edit</Button>}
             </CardWrapper>
         )
