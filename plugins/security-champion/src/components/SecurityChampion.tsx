@@ -11,8 +11,9 @@ import List from "@mui/material/List"
 import Typography from "@mui/material/Typography"
 import { useSecurityChampionsQuery } from "../hooks/useSecurityChampionsQuery"
 import UserSearch from "./UserSearch"
-import { Button } from "@mui/material"
 import { useSetSecurityChampionMutation } from "../hooks/useChangeSecurityChampionsQuery"
+import { Button } from '@backstage/ui';
+import { UserEntity } from "@backstage/catalog-model"
 
 const CardWrapper = ({
     title,
@@ -39,7 +40,7 @@ export const SecurityChampion = ({
      const { data, isPending, error, refetch } = useSecurityChampionsQuery(repositoryNames)
 
      const [edit, setEdit] = useState<boolean>(false)
-     const [selectedEmail, setSelectedEmail] = useState<string | null | undefined>("");
+     const [selectedUser, setSelectedUser] = useState<UserEntity | null>(null);
      const mutation = useSetSecurityChampionMutation()
      const [isMutationError, setIsMutationError] = useState<boolean>(false)
 
@@ -71,15 +72,16 @@ export const SecurityChampion = ({
     }, [data])
 
     const setSecurityChampion = () => {
-        if (selectedEmail) {
+        if (selectedUser && selectedUser.spec.profile?.email) {
                 const champion : SecurityChamp = {
                 repositoryName: repositoryNames[0],
-                securityChampionEmail: selectedEmail
+                securityChampionEmail: selectedUser.spec.profile?.email
             }
             mutation.mutate(champion, {
                 onSuccess: () => {
                     refetch();
                     setEdit(false)
+                    setSelectedUser(null)
                 },
                 onError: () => {
                     setIsMutationError(true)
@@ -96,21 +98,21 @@ export const SecurityChampion = ({
         return (
              <CardWrapper
                 title={
-                    "Edit security champion:"
+                    "Change security champion:"
                 }
             >
                 <UserSearch
-                    selectedEmail={selectedEmail}
-                    setSelectedEmail={setSelectedEmail}
+                    selectedUser={selectedUser}
+                    setSelectedUser={setSelectedUser}
                 />
 
                 {isMutationError && <ErrorBanner errorMessage="Failed to set security champion"/>}
 
-                {!selectedEmail &&
-                <Button style={{ marginTop: 8 }} variant="contained" onClick={setSecurityChampion}  disabled >Change Champion</Button>}
+                {!selectedUser &&
+                <Button style={{ marginTop: 8 }} onClick={setSecurityChampion}  isDisabled={true} >Change Champion</Button>}
                 
-                 {selectedEmail &&
-                <Button style={{ marginTop: 8 }} variant="contained" onClick={setSecurityChampion}>Change champion</Button>}
+                 {selectedUser &&
+                <Button style={{ marginTop: 8 }} onClick={setSecurityChampion}>Change champion</Button>}
 
             </CardWrapper>
         )
