@@ -10,4 +10,4 @@ This security champion plugin displays the security champion of a repository in 
     target: http://localhost:8080
 ```
 
-Kartverket.dev is set up using microsoft authentication, and authentication is necessary for the plugin to attach a valid backstage token to the proxy API. Assuming this is in order, the application can be buildt and run using `yarn install` followed by `yarn dev`.
+Kartverket.dev is set up using microsoft authentication, and authentication is necessary for the plugin to attach a valid backstage token to the proxy API. Assuming this is in order, the application can be run using `yarn install` followed by `yarn dev`.
