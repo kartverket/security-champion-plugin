@@ -1,97 +1,102 @@
-import { useApi } from '@backstage/core-plugin-api';
-import { catalogApiRef } from '@backstage/plugin-catalog-react';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Avatar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText, Paper } from '@mui/material';
-import { UserEntity } from "@backstage/catalog-model"
-import { SearchField } from '@backstage/ui';
+import { useApi } from "@backstage/core-plugin-api";
+import { catalogApiRef } from "@backstage/plugin-catalog-react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemButton,
+  ListItemText,
+  Paper,
+} from "@mui/material";
+import { UserEntity } from "@backstage/catalog-model";
+import { SearchField } from "@backstage/ui";
 interface UserSearchProps {
-  selectedUser: UserEntity | null,
-  setSelectedUser: Dispatch<SetStateAction<UserEntity | null>>
+  selectedUser: UserEntity | null;
+  setSelectedUser: Dispatch<SetStateAction<UserEntity | null>>;
 }
 
-export const UserSearch = ({setSelectedUser, selectedUser}: UserSearchProps) => {
-    const [users, setUsers] = useState<UserEntity[]>([])
-    const [searchQuery, setSearchQuery] = useState('')
+export const UserSearch = ({
+  setSelectedUser,
+  selectedUser,
+}: UserSearchProps) => {
+  const [users, setUsers] = useState<UserEntity[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
-    const catalogApi = useApi(catalogApiRef)
+  const catalogApi = useApi(catalogApiRef);
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            const results = await catalogApi.getEntities({
-                filter: { kind: 'User' }
-            })
-           
-            setUsers(results.items as UserEntity[]);
-        }
-        fetchUsers();
-     }, [catalogApi])
-     
-    const filteredUsers = users.filter(user => {
-        const email = user?.spec.profile?.email?.toLowerCase() || '';
-        const displayName = user.spec?.profile?.displayName?.toLowerCase() || '';
-        return (
-            email.includes(searchQuery.toLowerCase()) ||
-            displayName.includes(searchQuery.toLowerCase())
-        );
-    });
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const results = await catalogApi.getEntities({
+        filter: { kind: "User" },
+      });
 
-    const showSelectedUser = () => {
-        if (selectedUser) {
-            return (
-                <ListItem>
-                 <ListItemAvatar>
-                            <Avatar src={selectedUser?.spec.profile?.picture} />
-                    </ListItemAvatar>
-                    <ListItemText
-                        primary={selectedUser?.spec?.profile?.displayName}
-                        secondary={selectedUser?.spec.profile?.email}
-                    />
-                </ListItem>
-            )
-        }
-        return(
-            <>
-            </>
-        )
-    }
+      setUsers(results.items as UserEntity[]);
+    };
+    fetchUsers();
+  }, [catalogApi]);
 
+  const filteredUsers = users.filter((user) => {
+    const email = user?.spec.profile?.email?.toLowerCase() || "";
+    const displayName = user.spec?.profile?.displayName?.toLowerCase() || "";
     return (
-        <div>
-            <SearchField
-                placeholder='Search...'
-                onChange={(input) => setSearchQuery(input)}
-                value={searchQuery}
-                />
-            {searchQuery ? 
-            <Paper style={{maxHeight: 300, overflow: 'auto', margin:'2px'}}>
-                <List>
-                    {filteredUsers.map((user, idx) => (
-                    <ListItemButton 
-                        key={idx} 
-                        onClick={() => {
-                            setSelectedUser(user);
-                            setSearchQuery('');
-                        }}
-                    >
-                        <ListItemAvatar>
-                            <Avatar src={user?.spec.profile?.picture} />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={user?.spec?.profile?.displayName}
-                            secondary={user?.spec.profile?.email}
-                        />
-                    </ListItemButton>
-                    ))}
-                </List>
-            </Paper> : 
-            <div>
-                {showSelectedUser()}
-            </div>
-            }
-        </div>
-        
+      email.includes(searchQuery.toLowerCase()) ||
+      displayName.includes(searchQuery.toLowerCase())
     );
+  });
+
+  const showSelectedUser = () => {
+    if (selectedUser) {
+      return (
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar src={selectedUser?.spec.profile?.picture} />
+          </ListItemAvatar>
+          <ListItemText
+            primary={selectedUser?.spec?.profile?.displayName}
+            secondary={selectedUser?.spec.profile?.email}
+          />
+        </ListItem>
+      );
+    }
+    return <></>;
+  };
+
+  return (
+    <div>
+      <SearchField
+        placeholder="Search..."
+        onChange={(input) => setSearchQuery(input)}
+        value={searchQuery}
+      />
+      {searchQuery ? (
+        <Paper style={{ maxHeight: 300, overflow: "auto", margin: "2px" }}>
+          <List>
+            {filteredUsers.map((user, idx) => (
+              <ListItemButton
+                key={idx}
+                onClick={() => {
+                  setSelectedUser(user);
+                  setSearchQuery("");
+                }}
+              >
+                <ListItemAvatar>
+                  <Avatar src={user?.spec.profile?.picture} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={user?.spec?.profile?.displayName}
+                  secondary={user?.spec.profile?.email}
+                />
+              </ListItemButton>
+            ))}
+          </List>
+        </Paper>
+      ) : (
+        <div>{showSelectedUser()}</div>
+      )}
+    </div>
+  );
 };
 
 export default UserSearch;
-
