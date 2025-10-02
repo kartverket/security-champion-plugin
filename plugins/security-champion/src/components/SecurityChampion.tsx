@@ -58,11 +58,13 @@ export const SecurityChampion = ({
       { champ: SecurityChamp; repositoryNames: string[] }
     >();
     data?.forEach((champ) => {
-      const repositories = champMap.get(champ.securityChampionEmail);
+      const repositories = champMap.get(
+        champ.securityChampionEmail.toLowerCase()
+      );
       if (repositories) {
         repositories.repositoryNames.push(champ.repositoryName);
       } else {
-        champMap.set(champ.securityChampionEmail, {
+        champMap.set(champ.securityChampionEmail.toLowerCase(), {
           champ,
           repositoryNames: [champ.repositoryName],
         });
