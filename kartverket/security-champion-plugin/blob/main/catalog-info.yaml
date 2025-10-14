@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: security-champion-plugin2
+  tags:
+    - internal
+spec:
+  type: website
+  lifecycle: production
+  owner: skvis
