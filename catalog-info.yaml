@@ -1,11 +1,11 @@
-# nonk8s
-apiVersion: "backstage.io/v1alpha1"
-kind: "Component"
+apiVersion: backstage.io/v1alpha1
+kind: Component
 metadata:
-    name: "security-champion-plugin"
-    tags:
-        - "internal"
+  name: security-champion-plugin
+  tags:
+    - internal
 spec:
-    type: "website"
-    lifecycle: "production"
-    owner: "skvis"
+  type: service
+  lifecycle: production
+  owner: felles_kartdatabase
+  system: persontjenesten
